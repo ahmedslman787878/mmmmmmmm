@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/smm/create"
+  to = "/.netlify/functions/smm_create"
+  status = 200
+
+[[redirects]]
+  from = "/api/smm/status"
+  to = "/.netlify/functions/smm_status"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

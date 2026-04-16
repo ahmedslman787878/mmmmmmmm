@@ -1,0 +1,52 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: orders
+    // Document ID: auto-generated
+    // Fields:
+    //   - amount: number (required)
+    //   - price: number (required)
+    //   - platformName: string (required)
+    //   - serviceName: string (required)
+    //   - link: string (required)
+    //   - transferPhone: string (required)
+    //   - status: string (required)
+    //   - date: string (optional)
+    //   - createdAt: number (required)
+    //   - acceptedAt: number (optional)
+    //   - userId: string (required)
+    //
+    // ===============================================================
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+    
+    function isValidOrder(data) {
+      return hasRequiredFields(['amount', 'price', 'platformName', 'serviceName', 'link', 'transferPhone', 'status', 'createdAt', 'userId']) &&
+             data.amount is number && data.amount > 0 &&
+             data.price is number && data.price > 0 &&
+             data.platformName is string && data.platformName.size() > 0 && data.platformName.size() < 50 &&
+             data.serviceName is string && data.serviceName.size() > 0 && data.serviceName.size() < 50 &&
+             data.link is string && data.link.size() > 0 && data.link.size() < 500 &&
+             data.transferPhone is string && data.transferPhone.size() > 0 && data.transferPhone.size() < 20 &&
+             data.status is string && data.status in ['بانتظار الموافقة', 'جاري الاتصال بالسيرفر', 'مقبول - جاري التنفيذ', 'مكتمل', 'مرفوض', 'خطأ من المزود'] &&
+             (!('errorMessage' in data) || data.errorMessage is string) &&
+             data.createdAt is number &&
+             data.userId is string;
+    }
+
+    match /orders/{orderId} {
+      allow read: if true;
+      allow create: if isValidOrder(request.resource.data);
+      allow update: if isValidOrder(request.resource.data);
+      allow delete: if true;
+    }
+  }
+}

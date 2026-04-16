@@ -1,0 +1,29 @@
+{
+  "entities": {
+    "Order": {
+      "title": "Order",
+      "description": "A user's order for social media services",
+      "type": "object",
+      "properties": {
+        "amount": { "type": "number", "description": "Number of followers/likes/views" },
+        "price": { "type": "number", "description": "Price in EGP" },
+        "platformName": { "type": "string", "description": "Platform (e.g., TikTok)" },
+        "serviceName": { "type": "string", "description": "Service (e.g., Followers)" },
+        "link": { "type": "string", "description": "Link to the account or video" },
+        "transferPhone": { "type": "string", "description": "Phone number used for Vodafone Cash transfer" },
+        "status": { "type": "string", "description": "Order status" },
+        "date": { "type": "string", "description": "Formatted date string" },
+        "createdAt": { "type": "number", "description": "Timestamp of creation" },
+        "acceptedAt": { "type": "number", "description": "Timestamp of acceptance" },
+        "userId": { "type": "string", "description": "Anonymous or Google User ID" }
+      },
+      "required": ["amount", "price", "platformName", "serviceName", "link", "transferPhone", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "orders/{orderId}": {
+      "schema": "Order",
+      "description": "Stores all user orders"
+    }
+  }
+}
