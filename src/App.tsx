@@ -94,7 +94,7 @@ function Home({ onSelectPackage }: { onSelectPackage: (pkg: any) => void }) {
       }
     } else if (selectedPlatform === 'youtube') {
       if (selectedService === 'followers') { // subscribers
-        baseAmount = 5000;
+        baseAmount = 2000;
         basePrice = 150;
       } else if (selectedService === 'likes') {
         baseAmount = 500;
